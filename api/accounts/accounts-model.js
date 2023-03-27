@@ -1,3 +1,4 @@
+
 const db= require("../../data/db-config")
 
 const getAll = () => {
@@ -8,26 +9,33 @@ const getAll = () => {
 
 const getById = id => {
   // KODLAR BURAYA
-  return db("accounts").where({id}).first();
+  return db("accounts").where("id",id).first();
 }
 
-const create = account => {
-  // KODLAR BURAYA
-  return db("accounts").create(account).then(ids=>{
-    return getById(ids[0]) //burayı anlamadım
-  });
+const getByName= name=>{
+  return db("accounts").where("name", name).first();
 }
 
-const updateById = (id, account) => {
+/* const getByFilter=filter=>{
+  return db("accounts").where(filter)
+} */
+
+const create = async (account) => {
   // KODLAR BURAYA
-  return db("accounts").where({id}).update(account).then(rows=>{
-    return getById(id)
-  })
+  const id=await db("accounts").insert(account)
+    return await getById(id)
+  
+}
+
+const updateById = async (id, account) => {
+  // KODLAR BURAYA
+  await db("accounts").where("id",id).update(account) // satır sayısı return
+  return await getById(id)
 }
 
 const deleteById = id => {
   // KODLAR BURAYA
-  return db("accounts").where("id", id).del();
+  return db("accounts").where("id", id).del(); // etkilenen kayıt sayısı
 }
 
 module.exports = {
@@ -36,4 +44,5 @@ module.exports = {
   create,
   updateById,
   deleteById,
+  getByName
 }
