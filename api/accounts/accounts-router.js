@@ -1,7 +1,15 @@
 const router = require('express').Router()
+const accountModel=require("./accounts-model");
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res, next) => {
   // KODLAR BURAYA
+  try{
+    let allAccounts= await accountModel.getAll()
+    res.json(allAccounts)
+  }catch(error){
+    next(error)
+  }
+  
 })
 
 router.get('/:id', (req, res, next) => {
